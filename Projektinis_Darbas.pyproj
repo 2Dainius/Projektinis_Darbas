@@ -24,7 +24,6 @@
     <Compile Include="data\loader.py" />
     <Compile Include="gui.py" />
     <Compile Include="logic\quiz.py" />
-    <Compile Include="logic\review.py" />
     <Compile Include="logic\timer.py" />
     <Compile Include="main.py" />
   </ItemGroup>
@@ -33,7 +32,7 @@
     <Folder Include="data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="data\questions.json" />
+    <Content Include="data\questions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

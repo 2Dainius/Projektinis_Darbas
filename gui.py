@@ -1,68 +1,83 @@
 from tkinter import *
 from tkinter import messagebox
 
-# Paprasti klausimai: tekstas, pasirinkimai, teisingas.
-# Kiekvienas klausimas turi rodomą tekstą ir kelis pasirinkimus.
-klausimai = [
-    {
-        "tekstas": "Klausimas " + str(i +1),
-        "pasirinkimai": [("Variantas1", "1"), ("Variantas2", "2"), ("Variantas3", "3")],
-        "teisingas": "2"
-    }
-    for i in range(10)
-]
+quiz = None
+timer = None
+pagrindinis = None
+testas = None
+laikmacio_after_id = None
 
-# Būsena:
-# dabartinis – rodomo klausimo indeksas
-# atsakymai – naudotojo pasirinkimų žemėlapis (indeksas -> reikšmė)
-# liko – kiek sekundžių liko laikmačiui
-dabartinis =0
-atsakymai = {}
-liko =60
+def sukurti_gui(root, quiz_obj, timer_obj):
+    global quiz, timer, pagrindinis
+    quiz = quiz_obj
+    timer = timer_obj
+    pagrindinis = root
 
-# Funkcija: pradėti testą nuo pradžių.
-# Veiksmai: nustato pradinę būseną, paslepia pradžios langą, sukuria testo langą.
+    pagrindinis.title("KET Testas")
+    pagrindinis.geometry("360x180")
+
+    sakninis_remas = Frame(pagrindinis)
+    sakninis_remas.place(x=20, y=20, width=320, height=140)
+
+    Label(sakninis_remas, text="KET Testas", font=("Arial",16, "bold")).place(x=0, y=0)
+
+    mygtuku_sritis = Frame(sakninis_remas)
+    mygtuku_sritis.place(x=0, y=64, width=300, height=60)
+
+    Button(mygtuku_sritis, text="Pradėti testą", command=pradeti, width=20).place(x=0, y=0)
+    Button(mygtuku_sritis, text="Išeiti", command=pagrindinis.destroy, width=20).place(x=0, y=32)
+    Button(mygtuku_sritis, text="Apie").place(relx=0.8, y=32)
+
+
 def pradeti():
-    global dabartinis, atsakymai, liko
-    dabartinis =0
-    atsakymai = {}
-    liko =60
-    pagrindinis.withdraw() # paslepiame pagrindinį langą
-    sukurti_testo_lang()
+    global laikmacio_after_id
 
-# Funkcija: sukurti testo langą.
-# Veiksmai: sukuria sritis klausimui, laikui, pasirinkimams ir mygtukams.
-# Viskas išdėstoma su place(), nenaudojant pack().
+    timer.stop()
+    if laikmacio_after_id is not None and pagrindinis.winfo_exists():
+        try:
+            pagrindinis.after_cancel(laikmacio_after_id)
+        except Exception:
+            pass
+        laikmacio_after_id = None
+
+    timer.reset() # reset timer without turning the app off
+
+    quiz.current_index = 0
+    quiz.user_answers = [None] * len(quiz.questions)
+    quiz.finished = False
+
+    pagrindinis.withdraw()
+    sukurti_testo_lang()
+    timer.start()
+    atnaujinti_laikmati()
+
+
 def sukurti_testo_lang():
     global testas
 
-    testas = Toplevel()
+    testas = Toplevel(pagrindinis)
     testas.title("KET Testas")
     testas.geometry("560x420")
-    testas.minsize(520,380)
+    testas.minsize(520, 380)
 
-    # Viršus: klausimo tekstas
     virsus = Frame(testas)
-    virsus.place(x=16, y=12, width=528, height=40)
+    virsus.place(x=16, y=12, width=528, height=70)
 
-    klausimo_zenklelis = Label(virsus, text="", font=("Arial",16, "bold"))
+    klausimo_zenklelis = Label(virsus, text="", font=("Arial", 14, "bold"), justify=LEFT, anchor="w")
     klausimo_zenklelis.place(x=0, y=0)
+    klausimo_zenklelis.config(wraplength=520)
 
-    # Laiko rodymas dešinėje
     laiko_remas = Frame(testas)
-    laiko_remas.place(x=16, y=56, width=528, height=28)
+    laiko_remas.place(x=16, y=86, width=528, height=28)
 
-    laikmatis_zenklelis = Label(laiko_remas, text="Laikas: " + str(liko) + " s", font=("Arial",12))
-    laikmatis_zenklelis.place(x=408, y=0) # paprasta dešinė zona
+    laikmatis_zenklelis = Label(laiko_remas, text="Laikas: -- s", font=("Arial", 12))
+    laikmatis_zenklelis.place(x=408, y=0)
 
-    # Pasirinkimų sritis
     pasirinkimu_remas = Frame(testas, bd=1, relief="ridge")
-    pasirinkimu_remas.place(x=16, y=92, width=528, height=250)
+    pasirinkimu_remas.place(x=16, y=122, width=528, height=220)
 
-    # Kintamasis radiomygtukų grupei
-    pasirinkimas = StringVar()
+    pasirinkimas = IntVar(value=-1)
 
-    # Mygtukai apačioje: Atgal, Kitas, Baigti
     mygtuku_remas = Frame(testas)
     mygtuku_remas.place(x=16, y=352, width=528, height=40)
 
@@ -75,18 +90,18 @@ def sukurti_testo_lang():
     mygtukas_baigti = Button(mygtuku_remas, text="Baigti", width=12, command=baigti)
     mygtukas_baigti.place(x=280, y=0)
 
-    # Būsena apačioje: rodom ar pasirinkta
-    busenos_zenklelis = Label(testas, text="Nepasirinkta", font=("Arial",10))
+    busenos_zenklelis = Label(testas, text="Nepasirinkta", font=("Arial", 10))
     busenos_zenklelis.place(x=16, y=396)
 
-    # Pagalbinė funkcija: įjungti/išjungti „Kitas“ pagal pasirinkimą
     def ijungti_kita():
-        if pasirinkimas.get():
-            mygtukas_kitas.config(state=NORMAL)
+        if testas.pasirinkimas.get() != -1:
+            testas.mygtukas_kitas.config(state=NORMAL)
+            testas.busenos_zenklelis.config(text="Pasirinkta") # atnaujina statusą
         else:
-            mygtukas_kitas.config(state=DISABLED)
+            testas.mygtukas_kitas.config(state=DISABLED)
+            testas.busenos_zenklelis.config(text="Nepasirinkta") # atnaujina statusą
 
-    # Išsaugome nuorodas į valdiklius objekte testas
+
     testas.klausimo_zenklelis = klausimo_zenklelis
     testas.pasirinkimu_remas = pasirinkimu_remas
     testas.pasirinkimas = pasirinkimas
@@ -95,186 +110,180 @@ def sukurti_testo_lang():
     testas.ijungti_kita = ijungti_kita
     testas.laikmatis_zenklelis = laikmatis_zenklelis
 
-    # Parodome pirmą klausimą ir paleidžiame laikmatį
     rodyti_klausima()
-    tikseti()
 
-# Funkcija: parodyti dabartinį klausimą ir jo atsakymo variantus.
-# Veiksmai: nustato tekstą, išvalo senus pasirinkimus, sukuria naujus radiomygtukus, atnaujina būseną.
+
 def rodyti_klausima():
-    q = klausimai[dabartinis]
-    testas.klausimo_zenklelis.config(text=str(dabartinis +1) + "/" + str(len(klausimai)) + " - " + q["tekstas"]) # pvz.: "1/10 - Klausimas1"
+    q = quiz.get_current_question()
 
-    # Išvalome senus radiomygtukus
-    for valdiklis in testas.pasirinkimu_remas.winfo_children():
-        valdiklis.destroy()
 
-    # Atstatome anksčiau pasirinktas reikšmes
-    testas.pasirinkimas.set(atsakymai.get(dabartinis, ""))
+    testas.klausimo_zenklelis.config(
+        text=f"{quiz.current_index + 1}/{len(quiz.questions)} - {q['question']}"
+    )
 
-    # Sukuriame naujus radiomygtukus su place()
-    indeksas =1
-    for pasirinkimas_item in q["pasirinkimai"]:
-        tekstas = pasirinkimas_item[0]
-        reiksme = pasirinkimas_item[1]
+
+    for w in testas.pasirinkimu_remas.winfo_children():
+        w.destroy()
+
+
+    prev = quiz.user_answers[quiz.current_index]
+    testas.pasirinkimas.set(prev if prev is not None else -1)
+
+
+    for i, option_text in enumerate(q["options"]):
         Radiobutton(
             testas.pasirinkimu_remas,
-            text=str(indeksas) + ". " + tekstas,
-            value=reiksme,
+            text=f"{i+1}. {option_text}",
+            value=i,                     # 0..3
             variable=testas.pasirinkimas,
-            command=testas.ijungti_kita,
-        ).place(x=10, y=10 + (indeksas -1) *32)
-        indeksas = indeksas +1
+            command=testas.ijungti_kita
+        ).place(x=10, y=10 + i * 32)
 
-    # Atnaujiname mygtuko „Kitas“ būseną
     testas.ijungti_kita()
 
-    # Atnaujiname būsenos tekstą
-    if atsakymai.get(dabartinis):
-        testas.busenos_zenklelis.config(text="Pasirinkta")
-    else:
-        testas.busenos_zenklelis.config(text="Nepasirinkta")
+    testas.busenos_zenklelis.config(
+        text="Pasirinkta" if quiz.user_answers[quiz.current_index] is not None else "Nepasirinkta"
+    )
 
-# Funkcija: išsaugoti dabartinį pasirinkimą.
-# Veiksmai: jei yra pasirinkta, įrašo į žemėlapį ir atnaujina būseną.
 def issaugoti():
-    if testas.pasirinkimas.get():
-        atsakymai[dabartinis] = testas.pasirinkimas.get()
-    testas.busenos_zenklelis.config(text="Pasirinkta")
+    val = testas.pasirinkimas.get()
+    if val != -1:
+        quiz.answer(val)
+        testas.busenos_zenklelis.config(text="Pasirinkta")
 
-# Funkcija: eiti į ankstesnį klausimą.
-# Veiksmai: jei įmanoma, išsaugo pasirinkimą, pereina atgal, parodo klausimą.
+
 def atgal():
-    global dabartinis
-    if dabartinis >0:
+    if quiz.current_index > 0:
         issaugoti()
-        dabartinis = dabartinis -1
+        quiz.previous()
         rodyti_klausima()
 
-# Funkcija: eiti į kitą klausimą (arba baigti testą, jei tai paskutinis).
-# Veiksmai: saugo pasirinkimą, pereina pirmyn, arba kviečia baigti().
+
 def kitas():
-    global dabartinis
     issaugoti()
-    paskutinis = len(klausimai) -1
-    if dabartinis < paskutinis:
-        dabartinis = dabartinis +1
+    if quiz.current_index < len(quiz.questions) - 1:
+        quiz.next()
         rodyti_klausima()
     else:
         baigti()
 
-# Funkcija: paprastas laikmatis.
-# Veiksmai: kas sekundę mažina „liko“, atnaujina tekstą, ir jei pasibaigė – baigia testą.
-def tikseti():
-    global liko
-    if not testas.winfo_exists():
-        return
-    if liko <=0:
-        baigti()
-        return
-    liko = liko -1
-    testas.laikmatis_zenklelis.config(text="Laikas: " + str(liko) + " s")
-    testas.after(1000, tikseti)
 
-# Funkcija: baigti testą.
-# Veiksmai: išsaugo pasirinkimus, uždaro testą, parodo rezultatų langą.
 def baigti():
+    global laikmacio_after_id
     issaugoti()
-    if testas.winfo_exists():
+    timer.stop()
+    if laikmacio_after_id is not None:
+        try:
+            testas.after_cancel(laikmacio_after_id)
+        except Exception:
+            pass
+        laikmacio_after_id = None
+
+    if testas and testas.winfo_exists():
         testas.destroy()
     rodyti_rezultatus()
 
-# Funkcija: rodyti rezultatų langą.
-# Veiksmai: suskaičiuoja teisingus atsakymus ir sukuria mygtukus peržiūrai/grįžimui.
-# UI taip pat naudoja place(), jokio pack.
+
 def rodyti_rezultatus():
-    langas = Toplevel()
+    langas = Toplevel(pagrindinis)
     langas.title("Rezultatai")
     langas.geometry("520x240")
 
-    # rezultatų tekstas
-    teisingi =0
-    i =0
-    while i < len(klausimai):
-        if atsakymai.get(i) == klausimai[i]["teisingas"]:
-            teisingi = teisingi +1
-        i = i +1
+    teisingi = quiz.calculate_score()
+    Label(langas, text=f"Jūsų rezultatas: {teisingi} / {len(quiz.questions)}",
+          font=("Arial",16, "bold")).place(x=16, y=16)
 
-    antraste = Label(langas, text="Jūsų rezultatas: " + str(teisingi) + " / " + str(len(klausimai)), font=("Arial",16, "bold"))
-    antraste.place(x=16, y=16)
+    Button(langas, text="Grįžti į pradžią",
+           command=lambda: (timer.stop(), langas.destroy(), pagrindinis.deiconify()),
+           width=20).place(x=16, y=80)
 
-    mygtuku_remas = Frame(langas)
-    mygtuku_remas.place(x=16, y=64, width=488, height=40)
+    Button(langas, text="Peržiūrėti atsakymus",
+           command=lambda: perziura(langas),
+           width=20).place(x=200, y=80)
 
-    Button(mygtuku_remas, text="Peržiūrėti atsakymus", command=lambda: perziura(langas), width=20).place(x=0, y=0)
-    Button(mygtuku_remas, text="Grįžti į pradžią", command=lambda: (langas.destroy(), pagrindinis.deiconify()), width=20).place(x=200, y=0)
-
-# Funkcija: rodyti peržiūros langą su visais atsakymais.
-# Veiksmai: sukuria paprastą sąrašą; išdėstymas su place().
 def perziura(rezultatu_langas):
-    perziuros_langas = Toplevel()
-    perziuros_langas.title("Atsakymų peržiūra")
-    perziuros_langas.geometry("600x420")
+    perziuros_langas = Toplevel(pagrindinis)
+    perziuros_langas.title("Peržiūra")
+    perziuros_langas.geometry("640x420")
 
-    vidus = Frame(perziuros_langas)
-    vidus.place(x=16, y=16, width=568, height=388)
+    idx = 0  # review index (separate from quiz.current_index)
 
-    # kiekvieną bloką dedame po80 px aukščiu
-    i =0
-    while i < len(klausimai):
-        q = klausimai[i]
-        virsus_y =8 + i *80
+    klausimas_lbl = Label(perziuros_langas, font=("Arial", 12, "bold"), justify=LEFT, anchor="w")
+    klausimas_lbl.place(x=16, y=16, width=608, height=80)
 
-        Label(vidus, text="Klausimas " + str(i +1) + ": " + q["tekstas"], font=("Arial",12, "bold")).place(x=0, y=virsus_y)
+    options_frame = Frame(perziuros_langas)
+    options_frame.place(x=16, y=110, width=608, height=220)
 
-        # teisingo atsakymo tekstas
-        teisingas_tekstas = "-"
-        j =0
-        while j < len(q["pasirinkimai"]):
-            t = q["pasirinkimai"][j][0]
-            v = q["pasirinkimai"][j][1]
-            if v == q["teisingas"]:
-                teisingas_tekstas = t
-            j = j +1
+    info_lbl = Label(perziuros_langas, font=("Arial", 11), justify=LEFT, anchor="w")
+    info_lbl.place(x=16, y=340, width=608, height=30)
 
-        # pasirinkto atsakymo tekstas
-        pasirinktas_tekstas = "-"
-        k =0
-        while k < len(q["pasirinkimai"]):
-            t2 = q["pasirinkimai"][k][0]
-            v2 = q["pasirinkimai"][k][1]
-            if v2 == atsakymai.get(i, ""):
-                pasirinktas_tekstas = t2
-            k = k +1
+    def rodyti():
+        nonlocal idx
+        q = quiz.questions[idx]
+        user = quiz.user_answers[idx]
+        correct = q["correct"]
 
-        Label(vidus, text="Jūsų: " + pasirinktas_tekstas).place(x=0, y=virsus_y +26)
-        Label(vidus, text="Teisingas: " + teisingas_tekstas).place(x=0, y=virsus_y +46)
+        # question text (wrap so it doesn't cut)
+        klausimas_lbl.config(
+            text=f"{idx+1}/{len(quiz.questions)} - {q['question']}",
+            wraplength=600
+        )
 
-        i = i +1
+        for w in options_frame.winfo_children():
+            w.destroy()
 
-# Pagrindinis langas (pradžia): viskas su place(), be pack().
-pagrindinis = Tk()
-pagrindinis.title("KET Testas")
-pagrindinis.geometry("360x180")
+        for i, opt in enumerate(q["options"]):
+            prefix = ""
+            if user is not None and i == user and user != correct:
+                prefix = "❌ JŪSŲ: "
+            if i == correct:
+                prefix = "✅ TEISINGAS: "
 
-sakninis_remas = Frame(pagrindinis)
-sakninis_remas.place(x=20, y=20, width=320, height=140)
+            Label(options_frame, text=f"{i+1}. {prefix}{opt}", anchor="w", justify=LEFT, wraplength=580)\
+                .pack(anchor="w", pady=3)
 
-# Antraštės
-Label(sakninis_remas, text="KET Testas", font=("Arial",16, "bold")).place(x=0, y=0)
+        if user is None:
+            info_lbl.config(text="Jūsų atsakymas: Neatsakyta")
+        else:
+            info_lbl.config(text=f"Jūsų atsakymas: {user+1}    Teisingas: {correct+1}")
 
+        btn_back.config(state=NORMAL if idx > 0 else DISABLED)
+        btn_next.config(state=NORMAL if idx < len(quiz.questions)-1 else DISABLED)
 
-# Mygtukų sritis – tik place()
-mygtuku_sritis = Frame(sakninis_remas)
-mygtuku_sritis.place(x=0, y=64, width=300, height=60)
+    def back():
+        nonlocal idx
+        if idx > 0:
+            idx -= 1
+            rodyti()
 
-button_pradeti = Button(mygtuku_sritis, text="Pradėti testą", command=pradeti, width=20)
-button_pradeti.place(x=0, y=0)
+    def nxt():
+        nonlocal idx
+        if idx < len(quiz.questions)-1:
+            idx += 1
+            rodyti()
 
-button_iseiti = Button(mygtuku_sritis, text="Išeiti", command=pagrindinis.destroy, width=20)
-button_iseiti.place(x=0, y=32)
+    btn_back = Button(perziuros_langas, text="Atgal", command=back, width=12)
+    btn_back.place(x=16, y=375)
 
-buttom_apie = Button(mygtuku_sritis, text="Apie").place(relx=0.8, y=32)
+    btn_next = Button(perziuros_langas, text="Kitas", command=nxt, width=12)
+    btn_next.place(x=150, y=375)
 
-# Paleidžiame programą
-pagrindinis.mainloop()
+    Button(perziuros_langas, text="Uždaryti", command=perziuros_langas.destroy, width=12)\
+        .place(x=512, y=375)
+
+    rodyti()
+
+def atnaujinti_laikmati():
+    global laikmacio_after_id
+
+    if testas is None or not testas.winfo_exists():
+        laikmacio_after_id = None
+        return
+
+    testas.laikmatis_zenklelis.config(text=f"Laikas: {timer.time_left} s")
+
+    if timer.time_left <= 0:
+        baigti()
+        return
+
+    laikmacio_after_id = testas.after(1000, atnaujinti_laikmati)

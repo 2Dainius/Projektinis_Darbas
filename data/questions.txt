@@ -1,0 +1,50 @@
+1|Kokia yra maksimali leistina greičio riba gyvenamojoje vietovėje?|30 km/h|50 km/h|60 km/h|70 km/h|1
+2|Ką reiškia raudonas šviesoforo signalas?|Galima važiuoti atsargiai|Reikia sustoti|Galima važiuoti tik į dešinę|Reikia sulėtinti|1
+3|Koks minimalus atstumas iki pėsčiųjų perėjos, kurioje draudžiama stovėti?|3 metrai|5 metrai|10 metrų|15 metrų|1
+4|Ar privaloma naudoti saugos diržą mieste?|Ne, tik už miesto ribų|Taip, visada|Tik vairuotojui|Tik greitkeliuose|1
+5|Kas turi pirmenybę žiedinėje sankryžoje?|Įvažiuojantis transportas|Transportas, esantis žiediniame judėjime|Didesnis transportas|Transportas iš dešinės|1
+6|Kokia maksimali leistina alkoholio koncentracija kraujyje vairuotojams (promilėmis)?|0,0|0,2|0,4|0,5|2
+7|Koks minimalus vaiko amžius, kad jis galėtų sėdėti priekinėje sėdynėje be vaikiškos kėdutės?|10 metų|12 metų|14 metų|16 metų|1
+8|Ką reiškia geltonas mirkčiojantis šviesoforo signalas?|Draudžiama važiuoti|Reikia sustoti|Sankryža nereguliuojama, būkite atsargūs|Galima važiuoti bet kuria kryptimi|2
+9|Kokia maksimali greičio riba greitkelyje lengviesiems automobiliams?|90 km/h|110 km/h|120 km/h|130 km/h|3
+10|Ar draudžiama kalbėti mobiliuoju telefonu be laisvų rankų įrangos vairuojant?|Ne, galima trumpai|Taip, draudžiama|Galima tik mieste|Galima stovint ties šviesoforu|1
+11|Koks ženklas įspėja apie pėsčiųjų perėją?|Trikampis ženklas su pėsčiuoju|Apvalus ženklas su pėsčiuoju|Kvadratinis mėlynas ženklas|Raudonas aštuonkampis|0
+12|Ką reiškia ženklas 'STOP'?|Sustoti tik jei važiuoja kiti|Privaloma sustoti ir įsitikinti, kad saugu|Sulėtinti iki 5 km/h|Sustoti tik nakties metu|1
+13|Kokia maksimali greičio riba už gyvenamosios vietovės ribų?|70 km/h|80 km/h|90 km/h|100 km/h|2
+14|Kada privaloma įjungti artimąsias šviesas?|Tik naktį|Visada vairuojant|Tik tamsiuoju paros metu ir prastos matomumo sąlygomis|Tik už miesto|1
+15|Koks minimalus saugus atstumas iki priekyje važiuojančio transporto mieste?|2 sekundės|1 metras|10 metrų|Priklauso nuo greičio|3
+16|Ar galima viršyti greitį, jei skubate į ligoninę?|Taip, bet tik 20 km/h|Ne, draudžiama|Taip, jei įjungtos avarinės šviesos|Taip, jei nėra policijos|1
+17|Kas turi pirmenybę nereguliuojamoje sankryžoje?|Transportas, važiuojantis iš kairės|Transportas, važiuojantis iš dešinės|Didesnis transportas|Greitesnis transportas|1
+18|Koks minimalus atstumas iki sankryžos, kurioje draudžiama aplenkti?|50 metrų|100 metrų|Draudžiama aplenkti pačioje sankryžoje|200 metrų|2
+19|Ką reiškia dviguba ištisinė linija kelyje?|Galima kirsti atsargiai|Draudžiama kirsti|Galima kirsti tik posūkio atveju|Tai tik rekomenduojama linija|1
+20|Ar reikalingas vaikiška kėdutė vežant vaiką iki 3 metų?|Ne, pakanka laikyti rankose|Taip, privaloma|Tik ilgose kelionėse|Tik už miesto|1
+21|Kokia maksimali leistina priekabos masė be stabdžių?|500 kg|750 kg|1000 kg|1500 kg|1
+22|Koks minimalus padangų protektoriaus gylis vasaros metu?|0,8 mm|1,0 mm|1,6 mm|2,0 mm|2
+23|Ar galima stovėti ant geltono ištisinio krašto?|Taip, bet ne ilgiau kaip 5 minutes|Ne, draudžiama|Taip, jei nėra kitų automobilių|Taip, nakties metu|1
+24|Kada privaloma naudoti žiemines padangas?|Nuo lapkričio 10 d. iki kovo 31 d.|Nuo lapkričio 10 d. iki balandžio 1 d.|Tik kai sninga|Nėra privaloma|1
+25|Ką reiškia mėlynas apvalus ženklas su balta rodykle?|Draudžiama važiuoti ta kryptimi|Privalomas judėjimo kryptis|Rekomenduojama kryptis|Vienpusis eismas|1
+26|Koks maksimalus leistinas krovinių pločio viršijimas?|Neleidžiama viršyti|10 cm|20 cm|50 cm|0
+27|Ar privaloma sustoti prieš autobusą, kuris įjungia kairįjį posūkio signalą išvažiuojant iš stotelės?|Ne, autobusas turi laukti|Taip, privaloma|Tik gyvenamojoje vietovėje|Tik jei tai mokykinis autobusas|1
+28|Koks leistinas maksimalus automobilio plotis?|2,0 m|2,5 m|2,55 m|3,0 m|2
+29|Kada galima naudoti tolimąsias šviesas mieste?|Visada galima|Niekada neleidžiama|Kai nėra priešais važiuojančių|Tik neapšviestose gatvėse, jei nėra priešais ar priekyje važiuojančių|3
+30|Ką reiškia baltasis trikampis ženklas su raudonu kraštu?|Stop ženklas|Privaloma sustoti|Privaloma užleisti kelią|Įspėjimas apie pavojų|2
+31|Ar galima stumti automobilį su sugedusiu varikliu greitkeliu?|Taip, bet ne ilgiau kaip 1 km|Ne, draudžiama|Taip, jei įjungtos avarinės šviesos|Taip, tik nakties metu|1
+32|Koks minimalus atstumas iki geležinkelio pervažos, kuriame draudžiama stovėti?|5 metrai|10 metrų|15 metrų|20 metrų|1
+33|Ar galima važiuoti dviračių taku automobiliu?|Taip, jei nėra dviratininkų|Ne, draudžiama|Taip, lėtai|Taip, tik važiuojant į kiemą|1
+34|Kokia maksimali greičio riba vilkikui su priekaba už miesto?|70 km/h|80 km/h|90 km/h|110 km/h|1
+35|Kada privaloma įjungti avarines šviesas?|Tik nakties metu|Kai automobilis sustoja kelyje ir sukelia pavojų|Visada mieste|Tik greitkelyje|1
+36|Ar leidžiama vairuoti motociklą su B kategorijos teisėmis?|Taip, bet tik iki 125 cm³|Ne, reikia A kategorijos|Taip, bet tik mieste|Taip, jei patirtis daugiau nei 2 metai|1
+37|Koks minimalus atstumas iki autobusų stotelės, kuriame draudžiama stovėti?|10 metrų|15 metrų|20 metrų|25 metrai|1
+38|Ką reiškia raudonas aštuonkampis ženklas?|Draudžiama važiuoti|Stop - privaloma sustoti|Įvažiavimas draudžiamas|Pavojus|1
+39|Ar galima aplenkti kitą transportą pėsčiųjų perėjoje?|Taip, jei nėra pėsčiųjų|Ne, draudžiama|Taip, lėtai|Taip, jei kitas automobilis sustojęs|1
+40|Koks minimalus reikalaujamas regos aštrumas vairuotojui?|0,3|0,5|0,8|1,0|1
+41|Koks maksimalus leidžiamas triukšmo lygis lengvajam automobiliui?|72 dB|74 dB|76 dB|80 dB|1
+42|Ar galima stovėti ant šaligatvio?|Taip, visada|Ne, draudžiama, išskyrus specialiai pažymėtas vietas|Taip, jei lieka vietos pėstiesiems|Tik nakties metu|1
+43|Kada privaloma naudoti atšvaitus pėsčiajam?|Tik miške|Už gyvenamosios vietovės tamsiuoju paros metu|Visada|Tik žiemą|1
+44|Koks maksimalus leistinas automobilio aukštis?|3,0 m|3,5 m|4,0 m|4,5 m|2
+45|Ar galima sukti į kairę iš dešinės eismo juostos?|Taip, visada|Ne, draudžiama|Taip, jei nėra ženklo|Taip, jei kairysis užimtas|1
+46|Koks maksimalus leistinas greitis pramoginiam automobiliui su priekaba už miesto?|70 km/h|80 km/h|90 km/h|110 km/h|1
+47|Kada privaloma rodyti žmogaus, nukentėjusio eismo įvykyje, dokumentus policijai?|Tik jei yra sužeistų|Visada, jei įvyko eismo įvykis|Tik jei reikalauja|Nebūtina rodyti|1
+48|Ar galima kirsti ištisinę liniją aplenkiant dviratininką?|Ne, draudžiama|Taip, jei saugu|Taip, bet ne mieste|Taip, jei jis stabdo eismą|0
+49|Koks minimalus protektoriaus gylis žieminėms padangoms?|1,6 mm|2,0 mm|3,0 mm|4,0 mm|2
+50|Ar privaloma turėti gesintuvą lengvajame automobilyje?|Taip, privaloma|Ne, bet rekomenduojama|Tik taksi|Tik vilkikams|1
